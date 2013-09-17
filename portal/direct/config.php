@@ -1,0 +1,34 @@
+<?php
+$API = array(
+    'Authorization'=>array(
+        'methods'=>array(
+            'Login'=>array(
+                'len'=>1
+            ),
+            'Logout'=>array(
+                'len'=>0
+            )
+        )
+    ),
+    'Navigation'=>array(
+        'methods'=>array(
+            'Load'=>array(
+                'len'=>1
+            )
+        )
+    ),
+    'Modules'=>array(
+        'methods'=>array(
+            'GetActiveModules'=>array(
+                'len'=>0
+            )
+        )
+    ),
+    'Cron'=>array(
+        'methods'=>array(
+            'Run'=>array(
+                'len'=>0
+            )
+        )
+    )
+);
