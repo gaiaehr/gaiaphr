@@ -111,12 +111,14 @@ Ext.define('App.controller.Authorization', {
 			    delete me.autoLogoutMsg;
 			    // fire logoin event
 			    me.getApplication().fireEvent('login', me.getApplication(), result.user);
+			    return;
 		    }
 
             // login error message
             me.flyMsg('Oops!', 'Username or Password incorrect', true);
             panel.el.unmask();
             form.reset();
+		    return;
 
         });
     },

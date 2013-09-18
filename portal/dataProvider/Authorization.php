@@ -15,7 +15,6 @@ class Authorization {
 	 */
 	public function Login($params){
 
-
 		$user = array(
 			'id' => 1,
 			'title' => 'Mr.',
@@ -24,6 +23,7 @@ class Authorization {
 			'namelast' => 'LastNameName',
 			'token' => 'rtyhjkmnvcxswepkjhgfdfghjklvbnjkoiuy',
 		);
+
 		return array('success' => true, 'user' => $user);
 	}
 
