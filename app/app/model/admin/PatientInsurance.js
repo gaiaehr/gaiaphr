@@ -1,0 +1,156 @@
+/**
+ * Created with IntelliJ IDEA.
+ * User: ernesto
+ * Date: 4/4/13
+ * Time: 4:30 PM
+ * To change this template use File | Settings | File Templates.
+ */
+Ext.define('App.model.admin.PatientInsurance',{
+	extend:'Ext.data.Model',
+	table:{
+		name:'patient_insurances',
+		comment:'patients Insurance data'
+	},
+	fields:[
+		{
+			name:'id',
+			type:'int'
+		},
+		{
+			name:'pid',
+			type:'int'
+		},
+        {
+			name:'recNum',
+			type:'string'
+		},
+        {
+			name:'patFName',
+			type:'string',
+	        comment:'patient card first name'
+		},
+        {
+			name:'patMName',
+			type:'string',
+	        comment:'patient card initial / middle name'
+		},
+        {
+			name:'patLName',
+			type:'string',
+	        comment:'patient card last name'
+		},
+        {
+			name:'orderId',
+			type:'string',
+            comment:'this id is unique within this patient'
+		},
+		{
+			name:'insType',
+			type:'string'
+		},
+		{
+			name:'insCode',
+			type:'string'
+		},
+		{
+			name:'insGroup',
+			type:'string'
+		},
+		{
+			name:'insCover',
+			type:'string'
+		},
+		{
+			name:'insExpDate',
+			type:'date',
+            dataType:'date',
+            dateFormat:'Y-m-d'
+		},
+		{
+			name:'subscriberLName',
+			type:'string'
+		},
+		{
+			name:'subscriberFName',
+			type:'string'
+		},
+		{
+			name:'subscriberMName',
+			type:'string'
+		},
+		{
+			name:'subscriberSex',
+			type:'string'
+		},
+		{
+			name:'subscriberWorkPlace',
+			type:'string'
+		},
+		{
+			name:'subscriberBirthDate',
+            type:'date',
+            dataType:'date',
+            dateFormat:'Y-m-d'
+		},
+		{
+			name:'subscriberAddress',
+			type:'string'
+		},
+		{
+			name:'subscriberAddressCont',
+			type:'string'
+		},
+		{
+			name:'subscriberCity',
+			type:'string'
+		},
+		{
+			name:'subscriberState',
+			type:'string'
+		},
+		{
+			name:'subscriberZip',
+			type:'string'
+		},
+		{
+			name:'subscriberRelation',
+			type:'string'
+		},
+		{
+			name:'subscriberId',
+			type:'string'
+		},
+		{
+			name:'patientId',
+			type:'string'
+		},
+		{
+			name:'insImage',
+            dataType:'text',
+			type:'string'
+		},
+        {
+            name:'synced',
+            type:'bool',
+            defaultValue:0,
+            comment:'0 = dirty / not synced'
+        },
+        {
+            name:'lastUpdate',
+            type:'date',
+            dataType:'TIMESTAMP'
+        }
+
+	],
+	proxy:{
+		type:'direct',
+		api:{
+			read:Insurance.getInsurances,
+			create:Insurance.addInsurance,
+			update:Insurance.updateInsurance
+		},
+		reader:{
+			root:'data'
+		}
+	}
+});

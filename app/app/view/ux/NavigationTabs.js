@@ -1,0 +1,41 @@
+/**
+ *
+ */
+Ext.define('App.view.ux.NavigationTabs',{
+	extend:'Ext.toolbar.Toolbar',
+	alias:'widget.navigationtabs',
+	cls:'patientNavBar',
+	padding:0,
+	defaults:{
+		enableToggle:true,
+		toggleGroup:'patientTab',
+		disabled:true,
+		width:121,
+        margin:'0 3 0 0'
+	},
+	items:[
+		{
+			text:w('demographics'),
+			pressed:true,
+			action:0,
+            margin:'0 3 0 1'
+		},
+		{
+			text:w('insurances'),
+			action:1
+		},
+		{
+			text:w('record'),
+			action:2
+		},
+		{
+			text:w('documents'),
+			action:3
+		},
+		{
+			text:w('appointment'),
+			action:4,
+            margin:0
+		}
+	]
+});

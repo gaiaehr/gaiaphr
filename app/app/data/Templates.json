@@ -1,0 +1,18 @@
+[
+	{
+		"id": 1,
+		"tplTitle": "Welcome",
+		"tplName": "welcome",
+		"tplBody": "<!DOCTYPE html><html xmlns=\"http://www.w3.org/1999/html\"><head><title>Bienbenido a Salus!</title></head><body style=\"padding: 20px\"><img src=\"http://certun.com/salus/resources/images/logo.png\"><p style=\"color:#606060\">Hola [patient],</p><p style=\"color:#606060\">Graicas por escoger a Salus...</p><p><a href=\"http://www.certun.com/salus/#!/patient/[pid]\" style=\"color:#1d75da\">Portal de Paciente</a></p></body></html>",
+		"tplSubject": "Bienvendo a Salus!",
+		"tplLang": "es"
+	},
+	{
+		"id": 2,
+		"tplTitle": "Thank You",
+		"tplName": "thankyou",
+		"tplBody": "<title>Gracias!</title><img src=\"http://certun.com/salus/resources/images/logo.png\"><p style=\"color:#606060\">Hola [patient],</p><p style=\"color:#606060\">Graicas por tomar el timepo y completar la pre-registracion..........</p><p><a href=\"http://www.certun.com/salus/#!/patient/[pid]\" style=\"color:#1d75da\">Portal de Paciente</a></p>",
+		"tplSubject": "Muchas Gracias!",
+		"tplLang": "es"
+	}
+]

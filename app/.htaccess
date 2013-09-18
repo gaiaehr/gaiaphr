@@ -1,0 +1,22 @@
+RewriteEngine on
+
+RewriteBase /salus
+
+RewriteCond %{REQUEST_URI} !^/+(resources|data|ext|app|extensible|lib|m|packages|touch)/?
+RewriteCond %{REQUEST_URI} !.*\.(css|jpg|png|gif|zip|js|php)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} !=/favicon.ico
+RewriteRule ^(es|en)/(.*)$ ?lang=$1 [R=301,QSA]
+RewriteRule ^(admin/|admin)(.*)$ ?admin=true [R=301,QSA]
+
+
+RewriteCond %{REQUEST_URI} .*\.(css|jpg|png|gif|zip|js|php)
+RewriteRule ^(es|en)/(.*)$ $2 [L]
+RewriteRule ^(admin/|admin)(.*)$ $2 [L]
+
+# SSL
+# SSLOptions +StrictRequire
+# SSLRequireSSL
+# SSLRequire %{HTTP_HOST} eq "saluspr.com"
+# ErrorDocument 403 https://saluspr.com
