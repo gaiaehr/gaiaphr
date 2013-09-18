@@ -17,15 +17,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class Navigation {
+class Navigation
+{
 
 	/**
 	 * @param $params
 	 * @return array
 	 */
-	public function Load($params){
-
-
+	public function Load($params)
+    {
 
 		return array();
 	}
@@ -33,7 +33,8 @@ class Navigation {
 	/**
 	 * @return array
 	 */
-	public function Logout(){
+	public function Logout()
+    {
 
 		return array('success' => true);
 	}
