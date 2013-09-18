@@ -17,36 +17,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-$API = array(
-    'Authorization'=>array(
-        'methods'=>array(
-            'Login'=>array(
-                'len'=>1
-            ),
-            'Logout'=>array(
-                'len'=>0
-            )
-        )
-    ),
-    'Navigation'=>array(
-        'methods'=>array(
-            'Load'=>array(
-                'len'=>1
-            )
-        )
-    ),
-    'Modules'=>array(
-        'methods'=>array(
-            'GetActiveModules'=>array(
-                'len'=>0
-            )
-        )
-    ),
-    'Cron'=>array(
-        'methods'=>array(
-            'Run'=>array(
-                'len'=>0
-            )
-        )
-    )
-);
+date_default_timezone_set('UTC');
+
+echo json_encode(array(
+    'type'=>'event',
+    'name'=>'message',
+    'data'=>'Successfully polled at: '. date('g:i:s a') . ' UTC'
+));
