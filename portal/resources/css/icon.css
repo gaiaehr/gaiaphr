@@ -1,0 +1,12 @@
+.iconAdd {
+    background-image: url("resources/icons/add.gif") !important;
+}
+.iconRemove {
+    background-image: url("resources/icons/no.gif") !important;
+}
+.iconNo {
+    background-image: url("resources/icons/no.gif") !important;
+}
+.iconYes {
+    background-image: url("resources/icons/yes.gif") !important;
+}
