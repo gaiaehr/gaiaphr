@@ -3,6 +3,6 @@ Ext.define('App.view.Viewport', {
     extend: 'Ext.container.Container',
 	layout:'fit',
 	renderTo:'patient-portal',
-	minHeight:400,
-	width:620
+	minHeight:400
+//	width:620
 });

@@ -359,41 +359,44 @@ Ext.define('App.controller.Main', {
 
     onAppAfterRender:function(view){
         var me = this,
-            contentMain = Ext.get('content-main');
+	        contentMain = Ext.get('content-main');
+
 		if(App.isAdmin){
-			var sidePanel = Ext.get('content-side'),
-				topPanel = Ext.get('pre-content'),
-				styles = {
-					visibility:'hidden',
-					display:'none',
-					height:0,
-					width:0,
-					margin:0,
-					padding:0
-				};
-			sidePanel.setStyle(styles);
-			topPanel.setStyle(styles);
-			view.setWidth(960);
+//			var sidePanel = Ext.get('content-side'),
+//				topPanel = Ext.get('pre-content'),
+//				styles = {
+//					visibility:'hidden',
+//					display:'none',
+//					height:0,
+//					width:0,
+//					margin:0,
+//					padding:0
+//				};
+//			sidePanel.setStyle(styles);
+//			topPanel.setStyle(styles);
+//			view.setWidth(960);
+		}else{
+			say(view);
+//			view.setWidth(650);
+			view.addCls('mainAppContainer');
 		}
 
         if(App.action == 'logon'){
-            var items = [
-                {
-                    xtype: App.isAdmin ? 'logonadminform' : 'logonpatientform'
-                }
-            ];
-            if(App.partner != 'salus') items.splice(0,0,{
-                xtype:'image',
-                src:'resources/images/logos/'+ App.partner +'.png',
-                margin:'20 112',
-                height:50,
-                width:260
-            });
+            var items = [{
+                xtype: App.isAdmin ? 'logonadminform' : 'logonpatientform'
+            }];
+
+//            if(App.partner != 'salus') items.splice(0,0,{
+//                xtype:'image',
+//                src:'resources/images/logos/'+ App.partner +'.png',
+//                margin:'20 112',
+//                height:50,
+//                width:260
+//            });
+
             me.logon = me.getViewport().add(
                 Ext.create('App.view.logon.Window', {
-                    items: items,
-                    x: (App.isAdmin ? 230 : 60),
-                    y: 30
+                    items: items
                 })
             );
             me.logon.show();
@@ -408,6 +411,7 @@ Ext.define('App.controller.Main', {
 	},
 
     doAlignLogon:function(){
-		if(this.logon) this.logon.alignTo(this.getViewport(), 't-t', [0,30]);
+	    say(this.logon);
+		if(this.logon) this.logon.alignTo(this.getViewport(), 'c-c', [0,30]);
 	}
 });

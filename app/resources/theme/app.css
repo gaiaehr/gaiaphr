@@ -1,5 +1,12 @@
 @import url('../../ext/packages/ext-theme-neptune/build/resources/ext-theme-neptune-all.css');
 
+
+.mainAppContainer {
+    margin-right: auto;
+    margin-left: auto;
+}
+
+/* Application loading mask */
 .app-mask {
     background: none repeat scroll 0 0 white;
     opacity: 0.7;
