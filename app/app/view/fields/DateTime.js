@@ -1,5 +1,5 @@
 /**
- * GaiaEHR (Electronic Health Records)
+ * GaiaPHR (Patient Health Records)
  * Copyright (C) 2013 Certun, inc.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -14,13 +14,8 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- * @class Ext.ux.form.field.DateTime
- * @extends Ext.form.FieldContainer
- * @author atian25 (http://www.sencha.com/forum/member.php?51682-atian25)
- * @author ontho (http://www.sencha.com/forum/member.php?285806-ontho)
- * @author jakob.ketterl (http://www.sencha.com/forum/member.php?25102-jakob.ketterl)
- *
  */
+
 Ext.define('App.view.fields.DateTime', {
 	extend: 'Ext.form.FieldContainer',
 	mixins: {
