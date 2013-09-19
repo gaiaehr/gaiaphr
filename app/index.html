@@ -527,7 +527,7 @@ div.session_flash {
 <!-- <x-bootstrap> -->
 <link rel="stylesheet" href="bootstrap.css">
 <script src="ext/bootstrap.js"></script>
-<script src="ext/locale/ext-lang-es.js"></script>
+<script src="ext/locale/ext-lang-en.js"></script>
 <script src="bootstrap.js"></script>
 <!-- </x-bootstrap> -->
 <script type="text/javascript" src="resources/locale.js"></script>
@@ -540,7 +540,7 @@ div.session_flash {
         uncheckedValue:false
     });
 
-    Url = 'http://localhost/salus/app/';
+    Url = 'http://localhost/gaiaphr/app/';
     URLparams = Ext.Object.fromQueryString(location.search);
     Lang    = typeof URLparams.lang == 'undefined' ? 'es' : URLparams.lang;
     IsAdmin = typeof URLparams.admin == 'undefined' ? false : eval(URLparams.admin);
