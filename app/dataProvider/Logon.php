@@ -17,14 +17,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-if(!isset($_SESSION)){
+if(!isset($_SESSION))
+{
 	session_name('PatientWebPortal');
 	session_start();
 	session_cache_limiter('private');
 }
 include_once('../data/MatchaHelper.php');
 include_once('../lib/Matcha/plugins/Carbon/Carbon.php');
-class Logon {
+
+class Logon
+{
 	/**
 	 * @var bool|MatchaCUP
 	 */
@@ -56,18 +59,6 @@ class Logon {
 	/**
 	 * @var array
 	 */
-	private $allowAdmin = array(
-		'::1',              // localhost
-		'127.0.0.1',        // localhost
-		'192.168.1.1',      // localhost
-		'70.45.226.251',    // ernesto
-		'196.32.133.154',   // salus
-		'64.237.237.76',   // salus
-		'66.87.141.249'      // isa
-	);
-	/**
-	 * @var array
-	 */
 	private $allowCountries = array(
 		'PR',   // Puerto Rico
 		'PRI',  // Puerto Rico
@@ -92,26 +83,27 @@ class Logon {
      */
     private $pastMinutes = 15;
 
-
     private $autoIpBanned = true;
 
-
-
-    function __construct(){
+    function __construct()
+    {
         $this->s = MatchaModel::setSenchaModel('App.model.admin.Sessions');
         $this->g = MatchaModel::setSenchaModel('App.model.admin.GeoIps');
         $this->i = MatchaModel::setSenchaModel('App.model.admin.IPAccess');
     }
 
-	private function setUserModel(){
+	private function setUserModel()
+    {
 		if($this->u == null) $this->u = MatchaModel::setSenchaModel('App.model.admin.Users');
 	}
 
-	private function setAppointmentModel(){
+	private function setAppointmentModel()
+    {
 		if($this->a == null) $this->a = MatchaModel::setSenchaModel('App.model.admin.Appointments');
 	}
 
-	private function setPatientModel(){
+	private function setPatientModel()
+    {
 		if($this->p == null) $this->p = MatchaModel::setSenchaModel('App.model.admin.PatientDemographics');
 	}
 
@@ -119,65 +111,13 @@ class Logon {
 	 * @param $params
 	 * @return array
 	 */
-	public function getAuthorization($params){
+	public function getAuthorization($params)
+    {
 
         /**
          * handy var to store the IP
          */
         $ip = $_SERVER['REMOTE_ADDR'];
-
-
-        if($this->ipIsBanned($ip)){
-            return array(
-                'success'=>false,
-                'destroy'=>true,
-                'error'=>'your_ip_x_locked_error',
-                'data' => array(
-                    $ip
-                )
-            );
-        }
-
-
-        /**
-         * START START START START START START START
-         * TODO: REMOVE THIS BEFORE GOING LIVE!!!!!!!!!
-         * TODO: REMOVE THIS BEFORE GOING LIVE!!!!!!!!!
-         * TODO: REMOVE THIS BEFORE GOING LIVE!!!!!!!!!
-         * TODO: REMOVE THIS BEFORE GOING LIVE!!!!!!!!!
-         * TODO: REMOVE THIS BEFORE GOING LIVE!!!!!!!!!
-         */
-        if(!in_array($ip, $this->allowAdmin, true)){
-            return array(
-                'success'=>false,
-                'destroy'=>true,
-                'error'=>"Your ip '$ip' is not authorized to see this :-P"
-            );
-        }
-        /**
-         * TODO: REMOVE THIS BEFORE GOING LIVE!!!!!!!!!
-         * TODO: REMOVE THIS BEFORE GOING LIVE!!!!!!!!!
-         * TODO: REMOVE THIS BEFORE GOING LIVE!!!!!!!!!
-         * TODO: REMOVE THIS BEFORE GOING LIVE!!!!!!!!!
-         * TODO: REMOVE THIS BEFORE GOING LIVE!!!!!!!!!
-         * END END END END END END END END END END END
-         */
-
-
-
-
-		// first lets check if client country is allow to log at all
-        if($ip == '127.0.0.1' || $ip != '::1'){
-            $ipData = $this->g->sql("SELECT * FROM `geo_ip` WHERE INET_ATON('$ip') BETWEEN `ip_start_num` AND `ip_end_num` LIMIT 1")->one();
-            if($ipData !== false && !in_array($ipData['country_code'], $this->allowCountries, true)){
-                return array(
-                    'success'=>false,
-                    'destroy'=>true,
-                    'error'=>"Your Country '{$ipData['country']}' is not yet authorized to use this portal"
-                );
-            }
-        }
-
 
         $sParams = new stdClass();
         $sParams->filter = array();
@@ -201,7 +141,8 @@ class Logon {
         $sessions = $this->s->load($sParams)->limit(null, $this->maxFailures);
         $attempts = count($sessions);
 
-        if($attempts >= $this->maxFailures){
+        if($attempts >= $this->maxFailures)
+        {
             return array(
                 'success'=>false,
                 'destroy'=>false,
@@ -215,11 +156,13 @@ class Logon {
         }
 
         // ADMIN LOGIC
-		if(isset($params->isAdmin) && $params->isAdmin){
+		if(isset($params->isAdmin) && $params->isAdmin)
+        {
 			// set isAdmin
 			$this->isAdmin = true;
 			// check if remote address (client) is now allow to log as admin return error
-			if(!in_array($ip, $this->allowAdmin, true)){
+			if(!in_array($ip, $this->allowAdmin, true))
+            {
 				return array(
 					'success'=>false,
 					'destroy'=>true,
@@ -244,7 +187,9 @@ class Logon {
             $accessType = 'user';
             $success = !empty($user);
             // PATIENT LOGIC
-		}else{
+		}
+        else
+        {
 			// set isAdmin to false
 			$this->isAdmin = false;
             /**
@@ -265,7 +210,8 @@ class Logon {
                 $app = $this->a->load($authData)->one();
                 $success = !empty($app);
                 $accessType = 'appointment';
-                if($success && $app['pid'] > 0){
+                if($success && $app['pid'] > 0)
+                {
                     $this->setPatientModel();
                     $user = $this->p->load($app['pid'])->one();
                 }
@@ -284,12 +230,16 @@ class Logon {
 
         $_SESSION['authData']  = array('success' => $success);
 
-
-        if($success && $accessType == 'appointment' && isset($app['id'])){
+        if($success && $accessType == 'appointment' && isset($app['id']))
+        {
             $aid = $app['id'];
-        }elseif($success && isset($user['id'])){
+        }
+        elseif($success && isset($user['id']))
+        {
             $aid = $user['id'];
-        }else{
+        }
+        else
+        {
             $aid = '0';
         }
 
@@ -301,7 +251,8 @@ class Logon {
         $session->success = (int) $success;
         $session->ip = (string) $ip;
 
-        if($success){
+        if($success)
+        {
             if(isset($user) && !empty($user)){
                 $_SESSION['authData']['user'] = array(
                     'id' => $user['id'],
@@ -349,7 +300,8 @@ class Logon {
         }
 	}
 
-	public function setUnauthorized(){
+	public function setUnauthorized()
+    {
         if(isset($_SESSION['session'])){
             $params = (object) $_SESSION['session'];
             $params->eDate = (string) Carbon::now();
@@ -360,22 +312,8 @@ class Logon {
 		return array('success' => !isset($_SESSION['authData']));
 	}
 
-    private function ipIsBanned($ip){
-        $params = new stdClass();
-        $params->filter = array();
-        $params->filter[] = new stdClass();
-        $params->filter[0]->property = 'ip';
-        $params->filter[0]->operator = '=';
-        $params->filter[0]->value = $ip;
-        $params->filter[] = new stdClass();
-        $params->filter[1]->property = 'access';
-        $params->filter[1]->operator = '=';
-        $params->filter[1]->value = 1;
-        $result = $this->i->load($params)->one();
-        return !empty($result['data']);
-    }
-
-	private function generateToken($token){
+	private function generateToken($token)
+    {
 		return sha1(MatchaUtils::__encrypt($token));
 	}
 }
