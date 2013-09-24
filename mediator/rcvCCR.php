@@ -18,7 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 include_once('../app/lib/networkCCR.php');
-include_once('../app/lib/XMLutils/XML2Array.php');
+include_once('../app/lib/XMLUtils/XML2Array.php');
 
 $ServerIP = $_SERVER['REMOTE_ADDR'];
 $xml_post = networkCCR::receiveCCR();
@@ -30,7 +30,7 @@ if ($xml_post)
     $PatientXML = XML2Array::createArray($xml_post);
 
     // Step:2 - Parse the array
-
+    error_log(print_r($PatientXML, true));
     // Step:3 - Save the data into the data base
 
 }

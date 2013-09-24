@@ -18,5 +18,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 include_once('../app/lib/networkCCR.php');
-include_once('../app/lib/XMLutils/Array2XML.php');
+include_once('../app/lib/XMLUtils/Array2XML.php');
 
+networkCCR::setHost('http://localhost/gaiaphr/mediator/rcvCCR.php');
+networkCCR::loadXMLData('ccrForCCD.xml');
+networkCCR::transmitCCR();
