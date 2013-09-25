@@ -153,16 +153,7 @@ class Matcha
 	    	    $table = (string)(is_array(MatchaModel::$__senchaModel['table']) ? MatchaModel::$__senchaModel['table']['name'] : MatchaModel::$__senchaModel['table']);
             }
 			self::$__conn->exec('CREATE TABLE IF NOT EXISTS '.$table.' ('.MatchaModel::$tableId.' BIGINT(20) NOT NULL AUTO_INCREMENT PRIMARY KEY) '.self::__renderTableOptions().';');
-		    
-		    if(isset(MatchaModel::$__senchaModel['table']['data']))
-			{
-			    $rec = self::$__conn->prepare('SELECT * FROM '.$table);
-				$rec->execute();
-			    if($rec->rowCount() == 0 && isset(MatchaModel::$__senchaModel['table']['data']))
-			    {
-				    MatchaModel::__setSenchaModelData(MatchaModel::$__senchaModel['table']['data']);
-				}
-			}
+
 			return true;
 		}
 		catch(PDOException $e)
@@ -174,7 +165,7 @@ class Matcha
 	
 	/**
 	 * function __renderTableOptions():
-	 * Render and return a well formed Table Options for the creating table.
+	 * Render and return a well formed Table Options for creating table.
      * some default properties of the table are:
      * engine: InnoDB
      * charset: utf8

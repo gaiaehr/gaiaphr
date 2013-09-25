@@ -40,11 +40,15 @@ class MatchaModel extends Matcha
     static public function __SenchaModel($fileModel)
     {
         // skip this entire routine if freeze option is true
-        //if(self::$__freeze) return true;
         try
         {
-	        self::$__senchaModel = array();
+			if(self::$__freeze)
+            {
+				self::$__senchaModel = self::__getSenchaModel($fileModel);
+				return true;
+			}
 
+	        self::$__senchaModel = array();
             // check the difference in dates of the Sencha model file and the stored Sencha model on the server memory,
             // if there are equal go ahead and load the model from memory and quit the procedure
             if(self::__getFileModifyDate($fileModel) == MatchaMemory::__getSenchaModelLastChange($fileModel))
@@ -101,8 +105,20 @@ class MatchaModel extends Matcha
             if( count($tableColumns) <= 1 )
             {
                 self::__createAllColumns($workingModelFields);
+
+                // add data - if the model has data defined.
+                if(isset(self::$__senchaModel['table']['data']))
+                {
+                    $rec = self::$__conn->prepare('SELECT * FROM '.$table);
+                    $rec->execute();
+                    if($rec->rowCount() <= 0)
+                    {
+                        MatchaModel::__setSenchaModelData(MatchaModel::$__senchaModel['table']['data']);
+                    }
+                }
                 return true;
             }
+
             // Verify that all the columns does not have difference
             // between field names
             elseif( count($differentCreateColumns) || count($differentDropColumns) )
@@ -626,7 +642,8 @@ class MatchaModel extends Matcha
         return $SenchaField;
     }
 
-	static public function __getFields($model){
+	static public function __getFields($model)
+    {
 		$arr = array();
 		$fields = (is_object($model)? MatchaUtils::__objectToArray($model->fields): $model['fields']);
 		foreach($fields as $field)

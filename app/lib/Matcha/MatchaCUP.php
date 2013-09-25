@@ -139,7 +139,7 @@ class MatchaCUP
         catch(Exception $e)
         {
             MatchaErrorHandler::__errorProcess($e);
-            return false;
+            return $this;
         }
     }
 
@@ -251,9 +251,18 @@ class MatchaCUP
 					$whereArray = array();
 					foreach ($where->filter as $foo)
 					{
-						if(isset($foo->value) && isset($foo->property)){
-							$operator = isset($foo->operator)? $foo->operator : '=';
-							$whereArray[] = "`$foo->property` $operator '$foo->value'";
+						if(isset($foo->property)){
+							if($foo->value == null){
+								if(isset($foo->operator)){
+									$operator = $foo->operator == '=' ? ' IS ' : ' IS NOT';
+								}else{
+									$operator = 'IS';
+								}
+								$whereArray[] = "`$foo->property` $operator NULL";
+							}else{
+								$operator = isset($foo->operator)? $foo->operator : '=';
+								$whereArray[] = "`$foo->property` $operator '$foo->value'";
+							}
 						}
 					}
 					if(count($whereArray) > 0) $wherex = 'WHERE ' . implode(' AND ', $whereArray);
@@ -261,7 +270,10 @@ class MatchaCUP
 				$this->nolimitsql   = "SELECT * FROM `" . $this->table . "` $wherex $groupx $sortx";
 				$this->sql          = "SELECT * FROM `" . $this->table . "` $wherex $groupx $sortx $limits";
 			}
+
 			return $this;
+
+
 		}
 		catch(PDOException $e)
 		{
@@ -373,6 +385,35 @@ class MatchaCUP
 		{
 			return MatchaErrorHandler::__errorProcess($e);
 		}
+	}
+
+
+	public function sort($params){
+		if (isset($params->sort))
+		{
+			$sortArray = array();
+			foreach ($params->sort as $sort)
+			{
+				if(isset($sort->property) && (!is_array($this->phantomFields) || (is_array($this->phantomFields) && in_array($sort->property, $this->phantomFields)))){
+					$sortDirection = (isset($sort->direction) ? $sort->direction : '');
+					$sortArray[] = $sort->property.' '.$sortDirection;
+				}
+			}
+			if(!empty($sortArray)){
+				 $this->sql = $this->sql . ' ORDER BY ' . implode(', ', $sortArray);
+			}
+		}
+		return $this;
+	}
+
+	public function group($params){
+		if (isset($params->group))
+		{
+			$property = $params->group[0]->property;
+			$direction = isset($params->group[0]->direction) ? $params->group[0]->direction : '';
+			$this->sql = $this->sql . " GROUP BY `$property` $direction";
+		}
+		return $this;
 	}
 
 	/**
@@ -692,7 +733,7 @@ class MatchaCUP
 		foreach($values as $index => $foo)
 		{
 			if(!isset($properties[$index]['store']) || (isset($properties[$index]['store']) && $properties[$index]['store'] != false)){
-				$type = $properties[$index]['type'];
+				$type = isset($properties[$index]['type']) ? $properties[$index]['type'] : 'string';
 
 				if(isset($properties[$index]['encrypt']) && $properties[$index]['encrypt']){
 					$values[$index] = $this->dataEncrypt($values[$index]);
@@ -707,14 +748,19 @@ class MatchaCUP
 						{
 							$values[$index] = 0;
 						}
-					}
-					elseif($type == 'date')
+//					}
+//					elseif($type == 'int')
+//					{
+//						$values[$index] = ($foo == '' || $foo == false ? 'NULL' : $values[$index]);
+					}elseif($type == 'date')
 					{
 						$values[$index] = ($foo == '' ? 'NULL' : $values[$index]);
 					}
 					elseif($type == 'array')
 					{
 						$values[$index] = ($foo == '' ? 'NULL' : serialize($values[$index]));
+					}else{
+						addslashes($values[$index]);
 					}
 				}
 			}else{
